@@ -4,6 +4,9 @@ version = "0.1.0"
 authors = ["0xJWLabs <0xJWLabs@gmail.com>"]
 edition = "2021"
 description = "Listen and send keyboard and mouse events on Windows"
+documentation = "https://docs.rs/win_binder/"
+homepage = "https://github.com/0xJWLabs/win_binder"
+repository = "https://github.com/0xJWLabs/win_binder"
 readme = "README.md"
 keywords = ["input", "mouse", "testing", "keyboard", "automation", "windows"]
 categories = ["development-tools::testing", "api-bindings", "hardware-support"]
@@ -23,8 +26,27 @@ features = [
 ]
 
 [dev-dependencies]
+serde_json = "1.0.133"
+serial_test = "3.2.0"
 tokio = { version = "1.41.1", features = ["sync", "macros", "rt-multi-thread"] }
 
 [features]
 serialize = ["serde"]
 unstable_grab = []
+
+[[example]]
+name = "serialize"
+required-features = ["serialize"]
+
+[[example]]
+name = "grab"
+required-features = ["unstable_grab"]
+
+[[example]]
+name = "tokio_channel"
+required-features = ["unstable_grab"]
+
+[[test]]
+name = "grab"
+path = "tests/grab.rs"
+required-features = ["unstable_grab"]

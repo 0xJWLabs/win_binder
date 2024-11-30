@@ -17,7 +17,6 @@ use windows::Win32::UI::Input::KeyboardAndMouse::VK_RSHIFT;
 use windows::Win32::UI::Input::KeyboardAndMouse::VK_SHIFT;
 use windows::Win32::UI::WindowsAndMessaging::GetForegroundWindow;
 use windows::Win32::UI::WindowsAndMessaging::GetWindowThreadProcessId;
-use windows::Win32::UI::WindowsAndMessaging::HSHELL_HIGHBIT;
 
 use crate::common::get_code;
 use crate::common::get_scan_code;
@@ -28,6 +27,8 @@ use crate::win_binder::EventType;
 use crate::win_binder::Key;
 use crate::win_binder::KeyboardState;
 
+const HIGHBIT: u8 = 0x80;
+
 pub struct Keyboard {
     last_code: UINT,
     last_scan_code: UINT,
@@ -36,8 +37,8 @@ pub struct Keyboard {
 }
 
 impl Keyboard {
-    pub fn new() -> Option<Self> {
-        Some(Self {
+    pub fn new() -> Option<Keyboard> {
+        Some(Keyboard {
             last_code: 0,
             last_scan_code: 0,
             last_state: [0; 256],
@@ -137,13 +138,14 @@ impl KeyboardState for Keyboard {
         match event_type {
             EventType::KeyPress(key) => match key {
                 Key::ShiftLeft => {
-                    self.last_state[VK_SHIFT.0 as usize] |= HSHELL_HIGHBIT as u8;
-                    self.last_state[VK_LSHIFT.0 as usize] |= HSHELL_HIGHBIT as u8;
+                    self.last_state[VK_SHIFT.0 as usize] |= HIGHBIT;
+                    self.last_state[VK_LSHIFT.0 as usize] |= HIGHBIT;
                     None
                 }
                 Key::ShiftRight => {
-                    self.last_state[VK_SHIFT.0 as usize] |= HSHELL_HIGHBIT as u8;
-                    self.last_state[VK_RSHIFT.0 as usize] |= HSHELL_HIGHBIT as u8;
+                    self.last_state[VK_SHIFT.0 as usize] |= HIGHBIT;
+                    self.last_state[VK_RSHIFT.0 as usize] |= HIGHBIT;
+
                     None
                 }
                 Key::CapsLock => {
@@ -157,13 +159,13 @@ impl KeyboardState for Keyboard {
             },
             EventType::KeyRelease(key) => match key {
                 Key::ShiftLeft => {
-                    self.last_state[VK_SHIFT.0 as usize] &= HSHELL_HIGHBIT as u8;
-                    self.last_state[VK_LSHIFT.0 as usize] &= HSHELL_HIGHBIT as u8;
+                    self.last_state[VK_SHIFT.0 as usize] &= HIGHBIT;
+                    self.last_state[VK_LSHIFT.0 as usize] &= HIGHBIT;
                     None
                 }
                 Key::ShiftRight => {
-                    self.last_state[VK_SHIFT.0 as usize] &= HSHELL_HIGHBIT as u8;
-                    self.last_state[VK_RSHIFT.0 as usize] &= HSHELL_HIGHBIT as u8;
+                    self.last_state[VK_SHIFT.0 as usize] &= HIGHBIT;
+                    self.last_state[VK_RSHIFT.0 as usize] &= HIGHBIT;
                     None
                 }
                 _ => None,
