@@ -8,8 +8,8 @@ documentation = "https://docs.rs/win_binder/"
 homepage = "https://github.com/0xJWLabs/win_binder"
 repository = "https://github.com/0xJWLabs/win_binder"
 readme = "README.md"
-keywords = ["input", "mouse", "testing", "keyboard", "automation", "windows"]
-categories = ["development-tools::testing", "api-bindings", "hardware-support"]
+keywords = ["input", "mouse", "keyboard", "automation", "windows"]
+categories = ["api-bindings", "hardware-support"]
 license = "MIT"
 
 [dependencies]
